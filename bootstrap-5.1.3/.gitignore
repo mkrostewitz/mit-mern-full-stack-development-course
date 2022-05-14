@@ -4,6 +4,7 @@
 /resources/
 
 # Numerous always-ignore extensions
+*.DS_Store
 *.diff
 *.err
 *.log
