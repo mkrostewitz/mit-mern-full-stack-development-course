@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<script src="payments_2005_to_2010.js"></script>
+<script>
+
+function formatNumber(payments) {
+	payments = Math.round(payments);
+	return payments.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+let payments = 0;
+function add(item, counter, array){
+    payments += Number(item[9]);
+}
+
+chicago.data.forEach(add);
+console.log(formatNumber(payments))
+
+</script>
+</html>

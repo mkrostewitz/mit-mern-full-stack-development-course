@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grid</title>
+    <style>
+        .on{
+            background: orange;
+        }                
+        .content{
+            display: grid;
+            grid-template-columns: repeat(10,1fr);
+            grid-template-rows: repeat(10,1fr);
+            gap: 5px;
+        }
+        div{
+            padding: 10px;
+            text-align: center;
+            border-style: solid;
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="createGrid()">CREATE GRID</button>    
+    <button onclick="move()" style="margin-bottom: 10px;">MOVE</button>
+    <main class="content" id="target">
+    </main>
+    <script>
+    
+    const count = document.getElementsByTagName('div').length + 1;
+    function createGrid() {
+    if ( count <= 1 ) {
+        const Parent = document.getElementById("target")
+    
+        let counter = 100
+        let newDiv;
+        let newContent;
+
+        for (let i = 1; i < counter + 1; i++) {
+            newDiv = document.createElement('div');
+            newDiv.setAttribute('id', 'n' + i );
+            newContent = document.createTextNode(i)
+            newDiv.appendChild(newContent);
+            
+            Parent.appendChild(newDiv)
+        }
+    }
+
+}
+    
+function toggle(i) {            
+        let element;
+    
+        // toggle off the exiting div
+        element = document.getElementById('n' + (i-1) );
+        if ( element !== null ) {
+            element.classList.toggle('on');
+        }
+
+        // toggle on the next div
+        element = document.getElementById('n' + i);
+        element.classList.toggle('on');
+
+
+    }
+
+function move() {
+        let i = 1;
+        let timer = 300;
+        setInterval(() => {
+        toggle(i); 
+        i++;     
+        }, timer);    
+    }
+
+
+
+    </script>
+</body>
+</html>

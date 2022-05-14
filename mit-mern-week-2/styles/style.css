@@ -1,0 +1,117 @@
+/* Stylesheet */
+
+
+/* Page Font Settings */
+@font-face {
+    font-family: Roboto-Regular;
+    src: url(../fonts/Roboto-Regular.ttf);
+}
+
+@font-face {
+    font-family: Roboto-Medium;
+    src: url(../fonts/Roboto-Medium.ttf);
+}
+
+@font-face {
+    font-family: Roboto-Light;
+    src: url(../fonts/Roboto-Light.ttf);
+}
+
+body, html {
+    font-family: Roboto-Regular
+}
+
+h1 {
+    font-size: 24px;
+    text-transform: uppercase;
+    font-family: Roboto-Medium
+}
+
+h2 {
+    font-size: 18px;
+    text-transform: uppercase;
+    text-decoration: underline;
+}
+
+
+/* logo */
+.logo img {
+    width: 100px;
+    text-align: left;
+}
+
+/* Navigation & Links */
+.nav{
+    font-size: 24px;
+    font-weight: 500;
+    color: #F9FAF8;
+    background-color: #1F2937;
+    height: 80px
+}
+
+.nav-link a {
+    text-decoration: none;
+    color: white;
+}
+
+.nav-link a:hover {
+    color: rgb(194, 34, 122);
+}
+
+
+/* Page Layout */
+article {
+    padding-left: 50px;
+}
+
+body {
+    margin: 0;
+    width: 100%;
+}
+
+p {
+    margin: 0;
+}
+
+.nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.logo {
+    flex: 1 0 auto;
+}
+
+.container {
+    display: flex;
+    gap: 30px;
+
+}
+
+.item {
+    flex: 1 auto;
+    display: flex;
+    padding-right: 50px;
+}
+
+.right {
+    justify-content: flex-end;
+    margin-right: auto;
+    padding-right: 50px;
+}
+
+.links {
+  margin-left: auto;
+  display: flex;
+  gap: 20px;
+}
+
+.links li {
+    flex: 1 0 auto;
+    margin: auto;
+    list-style: none;
+}
+

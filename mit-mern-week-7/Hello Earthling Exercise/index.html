@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Earthling Exercise with timer</title>
+</head>
+
+<!-- could be at the top of the body if window.onload is injected -->
+<script>
+    window.onload = function () {
+    const tag = document.getElementById('tag1');
+    var time = 10;
+    const getTime = () => {
+        time = time - 1;
+        tag.innerHTML = 'Goodbye Aliens! Your ship leaves in ' + time + ' secs';
+        if ( time <= 0 ) { 
+            clearInterval(timer) 
+            return
+        };
+    };
+    const timer = setInterval(getTime, 500);
+    }
+</script>
+
+<body>
+    <div>
+        <h1 id="tag1">Hello Earthling</h1>
+    </div>
+</body>
+
+<!-- should be at the end of the page or include window.onload = function -->
+<script>
+    const tag = document.getElementById('tag1');
+    tag.innerHTML = 'Goodbye Aliens'
+</script>
+
+</html>

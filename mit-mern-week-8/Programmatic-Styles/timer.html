@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Programatic Styles - Dynamic</title>
+         <style>
+            .on{
+                background-color: orange ;
+            }
+
+            div {
+                padding: 50px;
+                text-align: center ;
+                border-style: solid;
+                font-size: 2em;
+            }
+        </style>      
+    </head>
+    <body>
+        <button onclick="toggle()">Toggle</button>
+        <button onclick="stop()">STOP</button>
+        <button onclick="start()">START</button>
+        <div id="target">TARGET</div>
+
+    <script>
+        function toggle() {
+            const element = document.getElementById('target');
+            element.classList.toggle('on');
+        }
+
+        let timer = null;
+
+        function start() {
+            timer = setTimeout(() => {
+                toggle();
+                console.log('Hello from the times')
+                start();
+            }, 1000);
+        }
+
+        function stop(){
+            clearTimeout(timer);
+        }
+
+    </script>
+    </body>
+</html>

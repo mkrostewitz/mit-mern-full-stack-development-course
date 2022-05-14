@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>		
+	</head>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="zipCodes.js"></script>
+<script src="graffiti_july_2015.js"></script>
+<script src="graffiti_chart.js"></script>
+
+<body>
+	<div id="chart_div" style="width: 1024px; height: 1600px;"></div>
+</body>
+
+<script>
+
+const graffiti = [];
+let matching;
+let obj;
+
+function graffitiReports(zip) {
+	//let foundset = []
+	matching = chicago.data.filter(function(report){
+
+	let comparison = zip === report[16];
+  	return comparison;  		
+	// if ( zip === report[16] ) {
+	// 	foundset.push(zip);
+	// }
+	// return foundset;
+	});
+
+	obj = {};
+	obj.zip = zip;
+	obj.reports = matching.length;
+	graffiti.push(obj);
+}
+
+zipCodes.forEach(graffitiReports);
+
+// graph graffiti reports data
+window.onload = function(){
+    const dataset = generateDataset(graffiti);	
+    drawChart(dataset);
+};
+
+</script>
+</html>
