@@ -7,6 +7,7 @@
 	<title>MTBA Bus Locations</title>
 
 	<script src="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js"></script>
+	<script src="./data/MBTA_Bus_Stops.geojson" ></script>    
 	<link href="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css" rel="stylesheet" />
 	<style>
 		body { margin: 0; padding: 0; }
@@ -52,17 +53,73 @@ async function run(){
 
 	let lat = current_location[0]['attributes']['latitude'];
 	let lng = current_location[0]['attributes']['longitude'];
+	let status_raw = current_location[0].attributes.occupancy_status;
+	let status_clean = status_raw.replace(/_/g, " ").toLowerCase();
 
 
 	if ( counter === 0 ) {
+		//Add Bus Stations
+		const bus_stops = [];
+    	MTBA_Stations.features.forEach((bus_stop, i) => {
+			bus_stops.push({
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates":[bus_stop.geometry.coordinates[0], bus_stop.geometry.coordinates[1]]
+            },
+			"properties": {
+				"name": bus_stop.properties.stop_name
+			}
+        })
+		});
+
+		const geojson_bus_stops = {
+			"type": "FeatureCollection", 
+			"features": bus_stops
+		};
 
 		map.loadImage(
-			'./media/bus.png',
+			'./media/bus_stop.png',
+			(error, image) => {
+				if (error) throw error;
+ 
+			map.addImage('bus_stop', image);
+
+			map.addSource('bus_stops', {
+				'type': 'geojson',
+				'data': geojson_bus_stops
+			})
+
+			map.addLayer({
+				'id': 'bus_stops',
+				'type': 'symbol',
+				'source': 'bus_stops',
+				'layout': {
+					'icon-image': 'bus_stop',
+					'icon-size': 0.5,
+					'text-field': '{name}',
+					'text-font': ['Open Sans Regular','Arial Unicode MS Regular'],
+					'text-size': 10,
+					'text-offset': [0, -1.6],
+					'text-anchor': 'top'
+					}
+				});
+			}
+		);
+
+		//Add Bus Marker
+		const popup = new mapboxgl.Popup({ closeOnClick: false })
+				.setLngLat([lng, lat])
+				.setHTML('<h3>Bus No: ' + current_location[0].attributes.label + '</h3>' + '<hr>' + 'Route: ' + current_location[0].relationships.route.data.id + '<br>' + 'Occupancy: ' + status_clean )
+				.addTo(map);
+
+		map.loadImage(
+			'./media/red_bus.png',
 			(error, image) => {
 				if (error) throw error;
  
 			// Add the image to the map style.
-			map.addImage('bus', image);
+			map.addImage('bus_red', image);
 
 
 
@@ -87,7 +144,7 @@ async function run(){
             'type': 'symbol',
         	'source': 'point',
 			'layout': {
-				'icon-image': 'bus',
+				'icon-image': 'bus_red',
 				'icon-size': 1,
 				'text-field': 'Bus No. 1',
 				'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
