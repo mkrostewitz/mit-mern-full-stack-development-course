@@ -16,15 +16,6 @@
 		  left: 0;
 		  padding: 10px;
 	  }
-
-	  .marker {
-		background-image: url('./media/bus.svg');
-		background-size: cover;
-		width: 50px;
-		height: 50px;
-		border-radius: 50%;
-		cursor: pointer;
-}
 	  
 	  </style>
 </head>
@@ -41,15 +32,14 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiaW50dXRlY2lvIiwiYSI6ImNsMnhqa3FnZDA3OWUzam8wd
 
 const map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/streets-v11',
-    center: [-71.104081,42.365554],
+	style: 'mapbox://styles/mapbox/streets-v11',
+	center: [-71.104081,42.365554],
     zoom: 14
 });
+// map.scrollZoom.disable();
 
 var current_location = ''
 var counter = 0;
-var marker = '';
-const Icon = '../media/bus.svg';
 
 async function run(){
 
@@ -65,43 +55,51 @@ async function run(){
 
 
 	if ( counter === 0 ) {
-		//add initial marker
 
-			// marker = new mapboxgl.Marker()
-			// .setLngLat([lng,lat])
-			// .addTo(map)
-		//   .bindPopup(title);
+		map.loadImage(
+			'./media/bus.png',
+			(error, image) => {
+				if (error) throw error;
+ 
+			// Add the image to the map style.
+			map.addImage('bus', image);
 
-		var geojson = {
-		type: 'FeatureCollection',
-		features: [
-			{
-			type: 'Feature',
-			geometry: {
-				type: 'Point',
-				coordinates: [lng,lat]
-			},
-			properties: {
-				title: 'Mapbox',
-				description: 'Washington, D.C.'
-			}
-			}			
-  		]
-		};
 
-		// add markers to map
-		for (const feature of geojson.features) {
-		// create a HTML element for each feature
-		const el = document.createElement('div');
-		el.className = 'marker';
 
-		// make a marker for each feature and add to the map
-		new mapboxgl.Marker(el).setLngLat(feature.geometry.coordinates).addTo(map);
-		}
+			map.addSource('point', {
+				'type': 'geojson',
+				'data': {
+					'type': 'FeatureCollection',
+					'features': [
+						{
+						'type': 'Feature',
+						'geometry': {
+							'type': 'Point',
+							'coordinates': [lng, lat]
+						}
+						}
+					]
+				}
+    		});
+
+			map.addLayer({
+            'id': 'points',
+            'type': 'symbol',
+        	'source': 'point',
+			'layout': {
+				'icon-image': 'bus',
+				'icon-size': 1,
+				'text-field': 'Bus No. 1',
+				'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+				'text-offset': [0, -1.6],
+				'text-anchor': 'top'
+        	}
+			});
+		});
 
 	} else {
 
-		Marker.setLngLat([lng, lat]);
+		mapboxgl.Marker.prototype.setLngLat([lng, lat]);
 	
 	}
 
@@ -109,7 +107,7 @@ async function run(){
 	counter ++;
 
 	// timer
-	setTimeout(run, 5000);
+	setTimeout(run, 15000);
 }
 
 // Request bus data from MBTA
