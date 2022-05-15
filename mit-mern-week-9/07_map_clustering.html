@@ -6,6 +6,7 @@
 <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 <script src='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js'></script>
 <link href='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.css' rel='stylesheet' />
+<script src="../Keys/keys.js"></script>
 <style>
   body { margin:0; padding:0; }
   #map { position:absolute; top:0; bottom:0; width:100%; }
@@ -23,7 +24,7 @@
 
 <script>
 
-L.mapbox.accessToken = 'pk.eyJ1IjoiaW50dXRlY2lvIiwiYSI6ImNsMnhqa3FnZDA3OWUzam8wd3RyaHJnMjQifQ.BSfbphgu9dm2g8czPVJC9g';
+L.mapbox.accessToken = MTBA_API_Key;
 
   const map = L.mapbox.map('map')
     .setView([41.873941, -87.624225], 12)

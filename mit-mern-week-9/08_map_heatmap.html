@@ -5,8 +5,8 @@
     <meta charset="utf-8" />
     <title>Heat Map</title>
     <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.js"></script>
-    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.css" rel="stylesheet"
-    />
+    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.css" rel="stylesheet"/>
+	<script src="../Keys/keys.js"></script>
     <script src="./data/crime_2012_december.json" ></script>    
     <style>
         body { margin: 0; padding: 0; }
@@ -19,7 +19,7 @@
 
 <script>
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiaW50dXRlY2lvIiwiYSI6ImNsMnhqa3FnZDA3OWUzam8wd3RyaHJnMjQifQ.BSfbphgu9dm2g8czPVJC9g';
+mapboxgl.accessToken = MTBA_API_Key;
 
 var map = new mapboxgl.Map({
     container: 'map',
