@@ -1,3 +1,3 @@
-var MAPBOX_API_Key = "pk.eyJ1IjoiaW50dXRlY2lvIiwiYSI6ImNsMnhqa3FnZDA3OWUzam8wd3RyaHJnMjQifQ.BSfbphgu9dm2g8czPVJC9g";
+var MAPBOX_API_Key = "YOUR_API_KEY_GOES_HERE";
 
 export default MAPBOX_API_Key;
