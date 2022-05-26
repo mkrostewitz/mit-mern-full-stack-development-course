@@ -2,8 +2,8 @@
 
 ##Table of Contents
 - [Project Description](#project-description)
-- [How to use the realtime bus tracker](how-to-use)
-- [Licenses](licenses)
+- [How to use the realtime bus tracker](#how-to-use)
+- [Licenses](#licenses)
 
 ## Project Description
 the Realtime Bus tracker app is based on a mapbox streetview map for the city of Boston. It allow you to track all buses within the City of Boston in realtime, including their status and available number of seats.

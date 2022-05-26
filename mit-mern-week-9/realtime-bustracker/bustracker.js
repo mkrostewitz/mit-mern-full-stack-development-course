@@ -37,151 +37,146 @@ function add_MapIcons() {
 window.onload = add_MapIcons()
 
 //add bus stops
-// map.on('load', function add_BusStops() {
+map.on('load', function add_BusStops() {
 
-// 	// build GeoJSON Data
-// 	const bus_stops = [];
-// 	MTBA_Stations.features.forEach((bus_stop, i) => {
+	const bus_stops = [];
+	MTBA_Stations.features.forEach((bus_stop, i) => {
 
-// 		bus_stops.push({
-// 		"type": "Feature",
-// 		"properties": {
-// 			"name": bus_stop.properties.stop_name
-// 		},
-// 		"geometry": {
-// 			"type": "Point",
-// 			"coordinates":[bus_stop.geometry.coordinates[0], bus_stop.geometry.coordinates[1]]
-// 		}
-// 		})
-// 	});
+	bus_stops.push({
+		"type": "Feature",
+		"properties": {
+			"name": bus_stop.properties.stop_name
+			},
+		"geometry": {
+			"type": "Point",
+			"coordinates":[bus_stop.geometry.coordinates[0], bus_stop.geometry.coordinates[1]]
+			}
+		})
+	});
 
-// 	const geojson_bus_stops = {
-// 			"type": "FeatureCollection", 
-// 			"features": bus_stops
-// 	};
-	
-// 	map.addSource('bus_stops', {
-// 		'type': 'geojson',
-// 		'data': geojson_bus_stops
-// 	});
+	const geojson_bus_stops = {
+			"type": "FeatureCollection", 
+			"features": bus_stops
+	};
+		
+	map.addSource('bus_stops', {
+		'type': 'geojson',
+		'data': geojson_bus_stops
+	});
 
-// 	map.addLayer({
-// 		'id': 'bus_stops',
-// 		'type': 'symbol',
-// 		'source': 'bus_stops',
-// 		'layout': {
-// 			'icon-image': 'bus_stop',
-// 			'icon-size': 0.5,
-// 			'text-field': '{name}',
-// 			'text-font': ['Open Sans Regular','Arial Unicode MS Regular'],
-// 			'text-size': 10,
-// 			'text-offset': [0, -1.6],
-// 			'text-anchor': 'top'
-// 			}
-// 	});
-// }
-// )
+	map.addLayer({
+		'id': 'bus_stops',
+		'type': 'symbol',
+		'source': 'bus_stops',
+		'layout': {
+			'icon-image': 'boston-t',
+			'icon-size': 1,
+			'text-field': '{name}',
+			'text-font': ['Open Sans Regular','Arial Unicode MS Regular'],
+			'text-size': 8,
+			'text-offset': [0, -1.5],
+			'text-anchor': 'bottom'
+			}
+	});
+})
 
 // Add and Update Buses
 var counter = 0;
+var map_markers = [];
+
 async function run(){
 
     // get bus data    
 	const locations = await getBusLocations();
-	console.log(new Date());
-	console.log(locations);
+	// console.log(new Date());
+	// console.log(locations);
 
-	locations.forEach((bus) => {
 
-		let lat = bus['attributes']['latitude'];
-		let lng = bus['attributes']['longitude'];
-		let bus_status = bus.attributes.occupancy_status;
+	// Build layer consisting bus locations
+	const bus_locations = [];
+
+	locations.forEach((location, i) => {
+		let bus_status = location.attributes.occupancy_status;
 		if (bus_status !== null ) {
 			bus_status = bus_status.replace(/_/g, " ").toLowerCase();
+		};
+
+        bus_locations.push({
+            'type': 'Feature',
+            'geometry': {
+                'type': 'Point',
+                'coordinates':[location['attributes']['longitude'], location['attributes']['latitude']]				
+            },
+			'properties': {
+				'description': ('<h3>Bus No: ' + location.attributes.label + '</h3>' + '<hr>' + 'Route: ' + location.relationships.route.data.id + '<br>' + 'Occupancy: ' + bus_status),
+				'iconSize': [40, 40],
+				'busID': location.id
+			}
+        })
+    });
+
+	const bus_locations_geojson = {
+        "type": "FeatureCollection", 
+        "features": bus_locations
+    }
+
+	if (counter === 0) {
+		//Create a new source
+		map.addSource('bus_locations', {
+			'type': 'geojson',
+			'data': bus_locations_geojson
+		});
+
+	} else {
+		// Update bus location
+		let geojsonSource = map.getSource('bus_locations');
+		geojsonSource.setData(bus_locations_geojson);
+	
+	}
+
+	//Set Markers
+	if ( map_markers.length > 0 ) {
+
+	// Remove existing markers
+		for (const marker of map_markers) {
+			marker.remove()
 		}
-
-		if ( counter === 0 ) {
-
-			// Add the bus marker	
-			map.addSource( bus.id, {
-						'type': 'geojson',
-						'data': {
-							'type': 'FeatureCollection',
-							'features': [
-								{
-								'type': 'Feature',
-								'geometry': {
-									'type': 'Point',
-									'coordinates':  [lng, lat]
-								}
-								}
-							]
-						}
-			});
-
-			map.addLayer({
-				'id': bus.id,
-				'type': 'symbol',
-				'source': bus.id,
-				'layout': {
-					'icon-image': 'bus_red',
-					'icon-size': 1,
-					'text-field': 'Bus ' + bus.attributes.label,
-					'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
-					'text-offset': [0, -1.6],
-					'text-anchor': 'top'
-					}
-			});
-
-			// When a click event occurs on a feature in the places layer, open a popup at the
-			// location of the feature, with description HTML from its properties.
-			map.on('click', bus.id , (e) => {
-				// Copy coordinates array.
-				const coordinates = [lng, lat];
-				const description = ('<h3>Bus No: ' + bus.attributes.label + '</h3>' + '<hr>' + 'Route: ' + bus.relationships.route.data.id + '<br>' + 'Occupancy: ' + bus_status );
-				
-				// Ensure that if the map is zoomed out such that multiple
-				// copies of the feature are visible, the popup appears
-				// over the copy being pointed to.
-				while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-				coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-				}
-				
-				new mapboxgl.Popup()
-				.setLngLat(coordinates)
-				.setHTML(description)
-				.addTo(map);
-				});
-				
-				// Change the cursor to a pointer when the mouse is over the places layer.
-				map.on('mouseenter', bus.id, () => {
-				map.getCanvas().style.cursor = 'pointer';
-				});
-				
-				// Change it back to a pointer when it leaves.
-				map.on('mouseleave', bus.id, () => {
-				map.getCanvas().style.cursor = '';
-				});
-
-			} else {
-
-			// Update bus location
-			let geojsonSource = map.getSource(bus.id);
-
-			geojsonSource.setData({
-				"type": "FeatureCollection",
-				"features": [{
-				"geometry": {
-					"type": "Point",
-					"coordinates":  [lng, lat]
-				}
-				}]
-			});
-
-		}
-
-	});
 		
+	}
+
+	let map_marker = '';
+
+	// Add markers to the map.
+	for (const marker of bus_locations ) {
+
+	// Create a DOM element for each marker.
+		const el = document.createElement('div');
+		const width = marker.properties.iconSize[0];
+		const height = marker.properties.iconSize[1];
+
+		el.className = 'marker';
+		el.id = marker.properties.busID;
+		el.style.backgroundImage = 'url(./assets/red_bus.png)';
+		el.style.width = `${width}px`;
+		el.style.height = `${height}px`;
+		el.style.backgroundSize = '100%';
+		
+		// el.addEventListener('click', () => {
+		// 	window.alert(marker.properties.message);
+		// });
+
+		// create the popup
+		const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(marker.properties.description);
+
+			
+		// Add markers to the map.
+		map_marker = new mapboxgl.Marker(el)
+			.setLngLat(marker.geometry.coordinates)
+			.setPopup(popup) 
+			.addTo(map);
+
+		map_markers.push(map_marker)
+	}		
 
 	// map.setCenter ([lng, lat])
 	counter ++;
@@ -190,40 +185,10 @@ async function run(){
 	setTimeout(run, 15000);
 }
 
-//PopUps
-map.on('click', 'places', (e) => {
-	// Copy coordinates array.
-	const coordinates = e.features[0].geometry.coordinates.slice();
-	const description = e.features[0].properties.description;
-	 
-	// Ensure that if the map is zoomed out such that multiple
-	// copies of the feature are visible, the popup appears
-	// over the copy being pointed to.
-	while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-	coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-	}
-	 
-	new mapboxgl.Popup()
-	.setLngLat(coordinates)
-	.setHTML(description)
-	.addTo(map);
-	});
-	 
-	// Change the cursor to a pointer when the mouse is over the places layer.
-	map.on('mouseenter', 'places', () => {
-	map.getCanvas().style.cursor = 'pointer';
-	});
-	 
-	// Change it back to a pointer when it leaves.
-	map.on('mouseleave', 'places', () => {
-	map.getCanvas().style.cursor = '';
-	});
-
-
 
 // Request bus data from MBTA
 async function getBusLocations(){
-	const url = 'https://api-v3.mbta.com/vehicles?filter[route]=1';
+	const url = 'https://api-v3.mbta.com/vehicles';
 	const response = await fetch(url);
 	const json     = await response.json();
 	return json.data;
