@@ -1,9 +1,8 @@
-
+//Get Mapbox API KEYS Keys
 import MAPBOX_API_Key from './keys.js';
-import MTBA_Stations from './data/MBTA_Bus_Stops.geojson' assert {type: 'json'};
-
 mapboxgl.accessToken = MAPBOX_API_Key;
 
+import MTBA_Stations from './data/MBTA_Bus_Stops.geojson' assert {type: 'json'};
 
 // Contruct Map
 const map = new mapboxgl.Map({
