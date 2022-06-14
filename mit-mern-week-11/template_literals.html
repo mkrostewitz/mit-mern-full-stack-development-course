@@ -1,0 +1,28 @@
+<script>
+
+    // ES5 syntax
+
+    function prettyDate_es5(day, dayNumber, month, year) {
+        const message = 'The ES5 date is ' + 
+        day + ', ' +
+        month + ' ' +
+        dayNumber + ', ' +
+        year;
+
+        return message
+    };
+
+    // ES6 syntax
+    function prettyDate_es6(day, dayNumber, month, year) {
+        const message = `The ES6 date is ${day}, ${month} ${dayNumber}, ${year}`;
+        return message
+    };
+
+
+const day       = 'Thursday';
+const dayNumber = '12';
+const month     = 'November';
+const year      = '1981'
+console.log(prettyDate_es5(day, dayNumber, month, year))
+console.log(prettyDate_es6(day, dayNumber, month, year))
+</script>

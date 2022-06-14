@@ -1,0 +1,19 @@
+<script>
+    // Simple multiply function to showcase some differencs/advancements from ES5 to ES6
+    
+    //ES5 syntax
+    function mutpliply_es5(a,b){
+        if (!b) b = 1;
+        return a*b
+    }
+    console.log(mutpliply_es5(5,4))
+    console.log(mutpliply_es5(5))
+    //ES6 syntax
+    function mutpliply_es6(a,b=1){
+        return a*b
+    }
+    console.log(mutpliply_es6(5,4))
+    console.log(mutpliply_es6(5, undefined))
+
+
+</script>

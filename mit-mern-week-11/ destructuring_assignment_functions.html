@@ -1,0 +1,48 @@
+<script>
+    function f() {
+        return [1, 2, 3, 4];
+    }
+
+    const [a,b] = f();
+    console.log(a);
+    console.log(b);
+
+
+// example of destructuring data through a function
+
+    //object
+    const user = {
+        id: 209,
+        firstName: 'peter',
+        lastName: 'parker',
+        age: 19
+    };
+
+    //function to extract the userID from the object
+    function userID({id}) {
+        return id;
+    }
+
+    //function to extract the firstName from the object
+    function FirstName({firstName}) {
+        return firstName;
+    }
+
+    //function to extract the firstName from the object
+    function LastName({lastName}) {
+        return lastName;
+    }
+
+    //function to extract the firstName from the object
+    function Age({age}) {
+        return age;
+    }
+
+
+    // calling the function and injecting the object
+    console.log(`User ID: ${userID(user)}`);
+    console.log(`First Name: ${FirstName(user)}`);
+    console.log(`Last Name: ${LastName(user)}`);
+    console.log(`Age: ${Age(user)}`);
+
+</script>
