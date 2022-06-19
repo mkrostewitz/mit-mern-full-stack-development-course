@@ -1,0 +1,22 @@
+<script>
+    // global scope
+
+    // Var with Function scope
+    function userInfo() {
+        var age = 20;
+        return age
+    }
+
+    console.log(userInfo());
+    console.log(age)
+
+    // Var with global scope (DONT DO!!!)
+    function userInfo() {
+    age = 20;
+        return age
+    }
+
+    console.log(userInfo());
+    console.log(age)
+
+</script>

@@ -1,0 +1,35 @@
+<script>
+
+    // Traditional Function
+    function greeting(){
+        return 'hello'
+    }
+
+    console.log(greeting())
+
+    // Arrow Function 
+    var greeting = () => {
+        console.log(greeting())
+    }
+
+    // Arrow Function with parameters
+    var add = (a,b) => a+b;
+    console.log(add(1,4));
+
+    //Call Back functions
+    var numbers = ['one' , 'two', 'three']
+
+    //Classic Call Back function
+    var output = numbers.map(function(label){
+        return label.length;
+    });
+    console.log(output);
+
+    //Arrow Call Back function
+    var output = numbers.map(label => label.length);
+    console.log(output);
+
+
+
+
+</script>

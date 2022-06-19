@@ -1,0 +1,57 @@
+ES6 Warmup
+<script>
+  // SECTION 1 - Word Play
+  let lorem =
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+  // how many words are there in this string?
+
+  // split this data into an array of words
+  let theData = lorem.split(' ');
+  console.log(theData)
+
+  // remove any , or . using filter on the array
+  newData = theData.map((item) => item.replace(' ', '')).map((item) => item.replace(',', '')).map((item) => item.replace('.', ''));
+  console.log(newData)
+
+  // write a function to display the words with n to a page
+  let start;
+  let pageLength;
+
+  // generalize it to start at location = start
+  let arguments = [newData, start, pageLength];
+  let paginate = (theData, start, pageLength) => {
+    let data = theData;
+    let pagesize;
+
+
+
+    start = () => {return ( typeof start === 'undefined') ? 0 : start};
+    let test = a => (a < 10) ? 'valid' : 'invalid';
+    pagesize = (typeof pageLength === undefined ? data.length : pageLength)
+
+    let page = {};
+    page = data.slice(begin, begin + pagesize)
+
+    return page;
+  };
+  
+  // set arguments using spread operator
+  paginate(...arguments)
+  console.log(paginate(...arguments));
+
+  let pageData = paginate(...arguments);
+
+  // write a function to count the number of occurances of each word
+  let wordFrequency = (pageData) => {
+    //create an array of unique words
+    let uniqueWords = [...new Set(pageData)]
+
+  }
+
+  wordFrequency(pageData)
+  console.log(wordFrequency(pageData));
+
+  // create an array of objects {word: , occurances: }
+
+  // write out the x most common words
+</script>
