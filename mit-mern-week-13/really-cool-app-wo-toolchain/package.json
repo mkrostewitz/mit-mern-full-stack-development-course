@@ -1,0 +1,19 @@
+{
+  "name": "really-cool-app",
+  "version": "1.0.0",
+  "description": "This is a really cool app",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "test",
+    "mit"
+  ],
+  "author": "Mathias Krostewitz",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}

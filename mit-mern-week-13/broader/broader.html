@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Broader</title>
+    <!-- Adding BABEL - Don't add this in production -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+     <!-- Putting our REACT components inside the DIV -->
+     <div id="root"></div>
+
+     <!-- load react -->
+     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+     <!-- load our react component -->
+     <script defer type="text/babel">
+        function formatName(user){
+            return user.firstname + ' ' + user.lastname; 
+        };
+
+        const user = {
+            firstname: 'Peter',
+            lastname: 'Parker',
+            age: 18
+        };
+
+        const style_adult = {
+            FontFamily: 'Avenir',
+            color: 'green'
+        };
+
+        const style_minor = {
+            FontFamily: 'Avenir',
+            color: 'red'
+        };
+
+        function getGreeting(user){
+            if(user.age >= 18) {
+                return <h1 style={style_adult}>{formatName(user)} is an adult</h1>
+            } return <h1 style={style_minor}>{formatName(user)} is a minor</h1>
+        };
+
+        ReactDOM.render(
+            getGreeting(user),
+            document.getElementById('root')
+        )
+     </script>
+    
+</body>
+</html>
